@@ -22,20 +22,26 @@
         options: {
             callback: function(){},
             initialInView: true,
-            numTimes:1
         },
         _isOnScreen:isOnScreen,
         _callbackCount:0,
         _widgetId: 0,
+        _offScreen:true,
         _doCallback:function(){
             this._trigger("callback",null,this._callbackCount);
         },
         _reachedLimit:function(){
-            return this._callbackCount>=this.options.numTimes;
+            return this.options.numTimes===undefined?false:(this._callbackCount>=this.options.numTimes);
+        },
+        _elementOnScreen(){
+            return this._isOnScreen(this.element);
         },
         _testAndCallback:function(){
             var reachedLimit=false;
-            if (this._isOnScreen(this.element)) {
+            var offScreen=this._offScreen;
+            var onScreen=this._elementOnScreen();
+            this._offScreen=!onScreen;
+            if (offScreen&&onScreen) {
                 this._callbackCount++;
                 this._doCallback();
                 reachedLimit=this._reachedLimit();
@@ -61,9 +67,13 @@
         },
         _create: function () {
             this._widgetId=widgetCount++;
-            var requiresScrollHandler=this.options.numTimes>0;
+            var requiresScrollHandler=this.options.numTimes===undefined?true:this.options.numTimes>0;
             if (this.options.initialInView&&requiresScrollHandler) {
                 requiresScrollHandler=!this._testAndCallback();
+            }else{ 
+                //this is necessary so that initialInView false do not then get a callback as soon as we scroll
+                //initial _offscreen=true, small scroll then will be onScreen
+                this._offScreen=!this._elementOnScreen();
             }
             if(requiresScrollHandler){
                 this._addScrollHandler();
