@@ -143,7 +143,7 @@ QUnit.test("callbacks should receive incrementing value when going out of view a
   assert.equal(calls[0],1);
   assert.equal(calls[1],2);
 });
-QUnit.test("callbacks can be handled like events",function(assert){
+QUnit.test("can receive the callback through event instead",function(assert){
   isOnScreenReturnValue=false;
   var plugInElement=addPluginToElement();
   var calls=[];
