@@ -1,14 +1,16 @@
 # inViewCallback.js
 
-Is a jquery-ui widget ( without any ui ) that will call the inView callback in options ( or trigger an event ) when the plugin element has entered the view.
+Is a jquery-ui widget ( without any ui ) that will call the inView callback in options ( or trigger an event ) when the plugin element has entered the view and the outOfView callback/event when out of view.
 
-## Entering the view
+## In view and out of view
 
 There are two ways that it can come into view.  The first is the logical,  when it is out of view and comes into view.  The second is dependent upon the option initialInView.  If initialInView is true and is in view then the callback will be called ( and it will need to go out of view and back in for the callback to be possibly called again.).  If it is out of view then it needs to come into view.  If initialInView is false and is in view then it will need to go out of view and come into view again.  If it is out of view then it will need to come into view.
 
-## Number of times the callback will be called
+The plugin will call the outOfView callback when it is either initially out of view ( initialInView does not affect this ) or when is in view and goes out of view.
 
-If the numTimes option has not been set then it is infinite, otherwise this option value restricts the number of callbacks that will be received.
+## Number of times the callbacks will be called
+
+If the numTimes option has not been set then it is infinite, otherwise this option value restricts the number of callbacks that will be received.  Note that numTimes is compared against the number of times the inView callback is called.  When the numTimes has been reached by being in view there will still be the possibility of a final outOfView callback.
 
 The numTimes option can be changed at any time.
 
@@ -23,8 +25,8 @@ initialInView defaults to true.  If the element is in view the callback will be 
 ``` javascript
 $('#someElement).inviewcallback(
     {
-        inView:function(event,callCount){
-            //this will be called indefinitely
+        inView:function(event,data){
+            //this will be called indefinitely - use data.count if desired
         }
     }
 )
@@ -36,7 +38,8 @@ Here the element will have to be out of view and come in to view for the event t
 Be sure to bind before applying the plugin.
 
 ``` javascript
-var pluginElement=$('#someElement).bind("inviewcallbackcallback",function(event,count){
+var pluginElement=$('#someElement).bind("inviewcallbackcallback",function(event,data){
+    //use data.count if desired
     //will be called indefinitely until...
   }).inviewcallback(
     {

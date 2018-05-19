@@ -27,33 +27,59 @@
         _callbackCount:0,
         _widgetId: 0,
         _offScreen:true,
-        _doCallback:function(){
-            this._trigger("inView",null,this._callbackCount);
+        _triggerView:function(inView){
+            this._trigger(inView?"inView":"outOfView",null,{count:this._callbackCount});
+        },
+        _triggerInView:function(){
+            this._triggerView(true);
+        },
+        _triggerOutOfView:function(){
+            this._triggerView(false);
         },
         _reachedLimit:function(){
             return this.options.numTimes===undefined?false:(this._callbackCount>=this.options.numTimes);
         },
-        _elementOnScreen(){
+        _elementOnScreen:function(){
             return this._isOnScreen(this.element);
         },
-        _testAndCallback:function(){
+        _testAndCallback:function(initialInView){
             var reachedLimit=false;
             var offScreen=this._offScreen;
             var onScreen=this._elementOnScreen();
             this._offScreen=!onScreen;
-            if (offScreen&&onScreen) {
-                this._callbackCount++;
-                this._doCallback();
-                reachedLimit=this._reachedLimit();
+
+            if(initialInView){
+                if(onScreen){
+                    this._callbackCount++;
+                    this._triggerInView();
+                    
+                }else{
+                    this._triggerOutOfView();
+                    reachedLimit=this._reachedLimit();
+                }
+            }else{
+                if (offScreen&&onScreen) {
+                    this._callbackCount++;
+                    this._triggerInView();
+                    
+                }else if(!offScreen&&!onScreen){
+                    this._triggerOutOfView();
+                    reachedLimit=this._reachedLimit();
+                }
             }
+
+            
             return reachedLimit;
         },
         _destroy:function(){
             this._removeScrollHandler();
         },
+        _getScrollHandlerEventType:function(){
+            return "scroll.inviewcallback." + this._widgetId;
+        },
         _addScrollHandler: function () {
             var self = this;
-            $(window).on("scroll.inviewcallback." + this._widgetId, function () {
+            $(window).on(this._getScrollHandlerEventType(), function () {
                 var reachedLimit=self._testAndCallback();
                 if(reachedLimit){
                     self._removeScrollHandler();
@@ -63,19 +89,21 @@
         },
         
         _removeScrollHandler:function(){
-            $(window).off("scroll.inviewcallback." + this._widgetId);
+            $(window).off(this._getScrollHandlerEventType());
         },
         _create: function () {
             this._widgetId=widgetCount++;
-            var requiresScrollHandler=this.options.numTimes===undefined?true:this.options.numTimes>0;
-            if (this.options.initialInView&&requiresScrollHandler) {
-                requiresScrollHandler=!this._testAndCallback();
+            var requiresCallback=this.options.numTimes===undefined?true:this.options.numTimes>0;
+           
+            if (this.options.initialInView&&requiresCallback) {
+                requiresCallback=!this._testAndCallback(true);
             }else{ 
-                //this is necessary so that initialInView false do not then get a callback as soon as we scroll
-                //initial _offscreen=true, small scroll then will be onScreen
                 this._offScreen=!this._elementOnScreen();
+                if(this._offScreen&&requiresCallback){
+                    this._triggerOutOfView();
+                }
             }
-            if(requiresScrollHandler){
+            if(requiresCallback){
                 this._addScrollHandler();
             }
         },
