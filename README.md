@@ -1,6 +1,6 @@
 # inViewCallback.js
 
-Is a jquery-ui widget ( without any ui ) that will call the callback in options ( or trigger an event ) when the plugin element has entered the view.
+Is a jquery-ui widget ( without any ui ) that will call the inView callback in options ( or trigger an event ) when the plugin element has entered the view.
 
 ## Entering the view
 
@@ -23,7 +23,7 @@ initialInView defaults to true.  If the element is in view the callback will be 
 ``` javascript
 $('#someElement).inviewcallback(
     {
-        callback:function(event,callCount){
+        inView:function(event,callCount){
             //this will be called indefinitely
         }
     }

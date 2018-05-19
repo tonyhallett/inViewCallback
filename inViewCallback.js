@@ -20,7 +20,7 @@
     }
     $.widget("tonyhallett.inviewcallback", {      
         options: {
-            callback: function(){},
+            inView: function(){},
             initialInView: true,
         },
         _isOnScreen:isOnScreen,
@@ -28,7 +28,7 @@
         _widgetId: 0,
         _offScreen:true,
         _doCallback:function(){
-            this._trigger("callback",null,this._callbackCount);
+            this._trigger("inView",null,this._callbackCount);
         },
         _reachedLimit:function(){
             return this.options.numTimes===undefined?false:(this._callbackCount>=this.options.numTimes);

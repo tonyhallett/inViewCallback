@@ -3,7 +3,7 @@ var isOnScreenReturnValue;
 var isOnScreenCalled=false;
 var calls=[];
 
-function callback(event,numberOfTimes){
+function inViewCallback(event,numberOfTimes){
   calls.push(numberOfTimes);
 }
 function addPluginToElement(plugInOptions){
@@ -15,7 +15,7 @@ function addPluginToElement(plugInOptions){
   }
   plugInOptions=plugInOptions===undefined?{}:plugInOptions;
   var callbackElement=createCallbackElement();
-  plugInOptions.callback=callback;
+  plugInOptions.inView=inViewCallback;
   callbackElement.inviewcallback(plugInOptions);
   return callbackElement;
 }
@@ -147,7 +147,7 @@ QUnit.test("can receive the callback through event instead",function(assert){
   isOnScreenReturnValue=false;
   var plugInElement=addPluginToElement();
   var calls=[];
-  plugInElement.bind("inviewcallbackcallback",function(event,data){
+  plugInElement.bind("inviewcallbackinview",function(event,data){
     calls.push(data);
   });
   
