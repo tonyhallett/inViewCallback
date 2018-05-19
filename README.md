@@ -48,6 +48,20 @@ var pluginElement=$('#someElement).bind("inviewcallbackcallback",function(event,
 pluginElement.inviewcallback('option',"numTimes",1);
 ```
 
+## Overriding the isOnScreen Calculation
+
+Currently the border box of the plugin element determines if the element is in the view port.
+
+JQuery UI 1.9 added the ability for widgets to be redefined.  By using this technique it was possible to test the widget easily.
+
+```javascript
+$.widget("tonyhallett.inviewcallback", $.tonyhallett.inviewcallback, {
+    _isOnScreen:function isOnScreen (el) {
+        //your implementation
+    }
+});
+```
+
 ## Tests
 
 The tests folder contains test.html and tests.js for testing in QUnit.
