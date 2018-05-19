@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width">
+  <title>Example</title>
+</head>
+<body>
+  <script src="../scripts/jquery.js"></script>
+  <script src="../scripts/jquery-ui.min.js"></script>
+  <script src="../inViewCallback.js"></script>
+  
+  <div id="inView">
+    <div>initialInView="true" numTimes - infinite</div>
+    <div id="inViewCount">Callback count - 0</div>
+  </div>
+  <div id="notInView">
+      <div>initialInView="false" numTimes - infinite</div>
+      <div id="notInViewCount">Callback count - 0</div>
+  </div>
+  <div>------------------------------------</div>
+  <div id="eventChangeOption">
+    <div>initialInView="true" numTimes - 0 - event</div>
+    <div id="eventChangeOptionCount">Callback count - 0</div>
+  </div>
+  <button onclick="changeOption()">Change numTimes to 5</button>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <script>
+      function changeOption(){
+        eventElement.inviewcallback("option","numTimes","5");
+      }
+      function setCallbackCount(el,count){
+        console.log("In cb");
+        el.text("Callback count - " + count);
+      }
+      var eventElement=$("#eventChangeOption").bind("inviewcallbackcallback",function(event,count){
+       setCallbackCount($("#eventChangeOptionCount"),count);
+      }).inviewcallback({numTimes:1});
+      
+
+      var inView=$("#inView").inviewcallback({callback:function(event,count){
+        setCallbackCount($("#inViewCount"),count);
+      }});
+      var notInView=$("#notInView").inviewcallback({callback:function(event,count){
+        setCallbackCount($("#notInViewCount"),count);
+      },initialInView:false});
+  
+    
+    </script>
+</body>
+</html>

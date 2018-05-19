@@ -33,16 +33,17 @@ $('#someElement).inviewcallback(
 ### With event
 
 Here the element will have to be out of view and come in to view for the event to be raised.
+Be sure to bind before applying the plugin.
 
 ``` javascript
-var pluginElement=$('#someElement).inviewcallback(
+var pluginElement=$('#someElement).bind("inviewcallbackcallback",function(event,count){
+    //will be called indefinitely until...
+  }).inviewcallback(
     {
         initialInView:false
     }
 )
-plugInElement.bind("inviewcallbackcallback",function(event,count){
-    //will be called indefinitely until...
-  });
+
 //changing the option at a later date
 pluginElement.inviewcallback('option',"numTimes",1);
 ```
