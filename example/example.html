@@ -10,35 +10,47 @@
   <script src="../scripts/jquery-ui.min.js"></script>
   <script src="../inViewCallback.js"></script>
   <style>
-    .cbElement{border:5px solid black}
+    #cbElements{width:500px}
+    .cbElement{border:5px solid black;margin-top:20px;margin-bottom:20px;padding:5px;border-radius:5px}
+    #offScreen{position:relative;display:none};
   </style>
-  <div class="cbElement" id="inView">
-    <div>initialInView="true" numTimes - infinite</div>
-    <div>In view count - 0</div>
-    <div>Out of view count - 0</div>
-  </div>
-  <div class="cbElement" id="notInView">
-    <div>initialInView="false" numTimes - infinite</div>
-    <div>In view count - 0</div>
-    <div>Out of view count - 0</div>  
-  </div>
-  <div>------------------------------------</div>
-  <div class="cbElement" id="eventChangeOption">
-    <div>initialInView="true" numTimes - 0 - event</div>
-    <div>In view count - 0</div>
-    <div>Out of view count - 0</div>
-  </div>
-  <button onclick="changeOption()">Change numTimes to 5</button>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
-  <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+  <div id="cbElements">
+    <div class="cbElement" id="inView">
+      <div>initialInView="true" numTimes - infinite</div>
+      <div>In view count - 0</div>
+      <div>Out of view count - 0</div>
+    </div>
+    <div class="cbElement" id="notInView">
+      <div>initialInView="false" numTimes - infinite</div>
+      <div>In view count - 0</div>
+      <div>Out of view count - 0</div>  
+    </div>
+    <hr>
+    <div class="cbElement" id="eventChangeOption">
+      <div>initialInView="true" numTimes - 0 - <b>event</b></div>
+      <div>In view count - 0</div>
+      <div>Out of view count - 0</div>
+    </div>
+    <button onclick="changeOption()">Change numTimes to 5</button>
+    <hr>
+    
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
 
-  <div class="cbElement" id="offScreen">
-    <div>initialInView="true" numTimes infinite</div>
-    <div>In view count - 0</div>
-    <div>Out of view count - 0</div>
+    <div class="cbElement" id="offScreen">
+      <div>initialInView="true" numTimes infinite</div>
+      <div>In view count - 0</div>
+      <div>Out of view count - 0</div>
+    </div>
   </div>
   <script>
+      function positionOffScreen(){
+        $("#offScreen").css({
+          left:$(window).width()+50,
+          display:"block"
+        });
+      }
       function changeOption(){
         eventElement.inviewcallback("option","numTimes","5");
       }
@@ -68,9 +80,11 @@
       var options={inView:inView,outOfView:outOfView};
       $("#inView").inviewcallback(options);
       $("#notInView").inviewcallback(options,{initialInView:false});
+
+      positionOffScreen();
       $("#offScreen").inviewcallback(options);
   
     
-    </script>
+  </script>
 </body>
 </html>
