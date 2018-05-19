@@ -14,16 +14,19 @@
   </style>
   <div class="cbElement" id="inView">
     <div>initialInView="true" numTimes - infinite</div>
-    <div id="inViewCount">Callback count - 0</div>
+    <div>In view count - 0</div>
+    <div>Out of view count - 0</div>
   </div>
   <div class="cbElement" id="notInView">
-      <div>initialInView="false" numTimes - infinite</div>
-      <div id="notInViewCount">Callback count - 0</div>
+    <div>initialInView="false" numTimes - infinite</div>
+    <div>In view count - 0</div>
+    <div>Out of view count - 0</div>  
   </div>
   <div>------------------------------------</div>
   <div class="cbElement" id="eventChangeOption">
     <div>initialInView="true" numTimes - 0 - event</div>
-    <div id="eventChangeOptionCount">Callback count - 0</div>
+    <div>In view count - 0</div>
+    <div>Out of view count - 0</div>
   </div>
   <button onclick="changeOption()">Change numTimes to 5</button>
   <br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
@@ -32,38 +35,40 @@
 
   <div class="cbElement" id="offScreen">
     <div>initialInView="true" numTimes infinite</div>
-    <div id="offScreenCount">Callback count - 0</div>
+    <div>In view count - 0</div>
+    <div>Out of view count - 0</div>
   </div>
   <script>
       function changeOption(){
         eventElement.inviewcallback("option","numTimes","5");
       }
-      function setCallbackCount($el,count){
-        $el.text("Callback count - " + count);
-      }
-      var colours=["red","orange","yellow","green"]
-      function changeBorderColor($el,count){
-        $el.css("borderColor",colours[count-1]);
-      }
-      var eventElement=$("#eventChangeOption").bind("inviewcallbackcallback",function(event,count){
-        changeBorderColor($(event.target),count);
-       setCallbackCount($("#eventChangeOptionCount"),count);
-      }).inviewcallback({numTimes:0});
       
+      function inView(event,data){
+        function changeBorderColor($el,count){
+          var colours=["red","orange","yellow","green"]
+          $el.css("borderColor",colours[count-1]);
+        }
+        function setInViewCount($el,count){
+          $el.children().eq(1).text("In view count - " + count);
+        }
+        var $target=$(event.target);
+        var cbCount=data.count;
+        changeBorderColor($target,cbCount);
+        setInViewCount($target,cbCount);
+      }
+      function outOfView(event,data){
+        function setOutOfViewCount($el,count){
+          $el.children().eq(2).text("Out of view count - " + count);
+        }
+        setOutOfViewCount($(event.target),data.count);
+      }
 
-      var inView=$("#inView").inviewcallback({callback:function(event,count){
-        changeBorderColor($(event.target),count);
-        setCallbackCount($("#inViewCount"),count);
-      }});
-      var notInView=$("#notInView").inviewcallback({callback:function(event,count){
-        changeBorderColor($(event.target),count);
-        setCallbackCount($("#notInViewCount"),count);
-      },initialInView:false});
+      var eventElement=$("#eventChangeOption").bind("inviewcallbackinview",inView).bind("inviewcallbackoutofview",outOfView).inviewcallback({numTimes:0});
 
-      var notInView=$("#offScreen").inviewcallback({callback:function(event,count){
-        changeBorderColor($(event.target),count);
-        setCallbackCount($("#offScreenCount"),count);
-      },initialInView:true});
+      var options={inView:inView,outOfView:outOfView};
+      $("#inView").inviewcallback(options);
+      $("#notInView").inviewcallback(options,{initialInView:false});
+      $("#offScreen").inviewcallback(options);
   
     
     </script>
