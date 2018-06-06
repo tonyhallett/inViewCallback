@@ -7,9 +7,14 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "opn tests/test.html"
   },
-  "author": "",
+  "author": "Tony Hallett",
   "license": "ISC",
-  "devDependencies": {}
+  "devDependencies": {
+    "opn-cli": "^3.1.0"
+  },
+  "homepage": "https://github.com/tonyhallett/inViewCallback",
+  "bugs": "https://github.com/tonyhallett/inViewCallback/issues",
+  "repository": "github:tonyhallett/inViewCallback"
 }
