@@ -1,8 +1,9 @@
 {
   "name": "inviewcallback",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Jquery-ui widget to callback when element is visible on the screen.",
   "main": "inViewCallback.js",
+  "files":["dest/inViewCallback.js"],
   "directories": {
     "test": "tests"
   },
