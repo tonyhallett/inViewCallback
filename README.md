@@ -23,7 +23,7 @@ Jquery and jquery-ui need to be present.
 initialInView defaults to true.  If the element is in view the callback will be called.
 
 ```javascript
-$('#someElement).inviewcallback(
+$('#someElement').inviewcallback(
     {
         inView:function(event,data){
             //this will be called indefinitely - use data.count if desired
@@ -38,7 +38,7 @@ Here the element will have to be out of view and come in to view for the event t
 Be sure to bind before applying the plugin.
 
 ```javascript
-var pluginElement=$('#someElement).bind("inviewcallbackcallback",function(event,data){
+var pluginElement=$('#someElement').bind("inviewcallbackcallback",function(event,data){
     //use data.count if desired
     //will be called indefinitely until...
   }).inviewcallback(
